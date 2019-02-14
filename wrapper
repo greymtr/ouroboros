@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+#incantation to our great lord and saviour, Lord Cthullu, so that He may bless 
+#the following lines of code to function properly with little to no problems :
+
+#Iä! Iä! Cthulhu fhtagn! Ph'nglui mglw'nfah Cthulhu R'lyeh wgah'nagl fhtagn!
+
+
+#-------------------------------------------------------------------------------
+
+
+#del is a funtion that accepts input from stdin and deletes all instances of the
+#first arguement
+
+del () {
+
+  a=$(cat)
+  echo "${a//$1/}"
+  
+}
+
+
+#rep is a function that accepts input from stdin and replaces all instances of 
+#the first argument with the second argument
+
+rep () {
+
+  a=$(cat)
+  echo "${a//$1/$2}"
+  
+}
+
+
+#readr accepts input from stdin and returns the value of the field denoted by 
+#the first argument, assuming field:value type format to exist
+
+readr () {
+
+  piped_text=$(cat)
+  echo "$piped_text" | grep "$1:" | del "$1:"
+
+}
+
+
+cd posts
+
+
+#run publish on all md files
+
+for file in $( ls *.md )
+  do
+  
+      echo "file:$file"
+#getting TITLE, DATE and TIME values from file
+    
+    title=$( cat "$file" | readr TITLE | rep "_" " " )
+    date=$( cat "$file" | readr DATE )
+    time=$( cat "$file" | readr TIME )
+
+  
+#datetime is easier to sort as opposed to any other format, after removal of 
+#all punctuation
+
+    datetime=$( echo $date$time | del : | del - )
+    echo "datetime:$datetime"
+  
+#stores file in content, gets rid of the lines where TITLE DATE and TIME are 
+#mentioned then deletes all occurences of multiple consecutive blank line,
+#switches problematic characters with appropriate html escape codes
+#and finally replaces the blank lines with the paragraph html tag
+
+    content=$( cat $file | 
+    del "TITLE:$title" | 
+    del "DATE:$date" | 
+    del "TIME:$time" | 
+    rep "
+    
+" "
+" |
+    rep "
+" "
+    </p>
+    <p>
+    ")
+
+#resolve markdown thing.
+#create temporary directory .dir
+
+    mkdir .dir
+    t=$(echo $title | rep " " "-" )
+    
+    
+#HTML stuff
+
+    echo "
+    <article class=\"post\">
+      <a id=\"$t\">
+      <h2 class=\"title\"> $title </h2>
+      <!--<span class=\"perma\">◉</span >-->
+      </a>
+      <p class="datetime">
+      <span class=\"date\">$date</span>
+    <span class=\"time\">$time</span>
+      </p>
+      <div class=\"content\">
+      <p>$content</p>
+      </div>
+      
+      
+      </article>
+    " > .dir/$datetime
+    
+    
+#ALT [ for future consideration ] : cat post.head $content post.tail > $datetime
+
+  done
+
+
+#removing temporary file tmp if it exists prior to the execution of the script
+
+rm ./tmp
+
+
+#copying all post contents, in descending chronological order to temporary file tmp
+
+for i in `ls -r .dir`
+  do
+  
+    cat ".dir/$i" >> tmp
+    
+  done
+  
+content=$( cat ./tmp )
+
+
+#writing content to index with template.
+
+cat template.html | rep CONTENT "$content" | tee ../index.html
+
+
+#getting rid of the temporary files.
+
+rm -rf .dir;
+rm tmp
+
+
