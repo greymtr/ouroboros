@@ -5,6 +5,21 @@
 
 #Iä! Iä! Cthulhu fhtagn! Ph'nglui mglw'nfah Cthulhu R'lyeh wgah'nagl fhtagn!
 
+#-------------------------------------------------------------------------------
+
+# THINGS TO DO :
+#
+#  1. post template 
+#  2. posting order [ sort by new, modified etc. ]
+#  3. make several themes for different purposes. [ microblog, full blog, image
+#     feed etc. ]
+#  4. make the UI better. nobody wants to be writing at the current prompt.
+#     link to editor.
+#  5. clean up code, make it more readable, add more comments for the tricky bits
+#  6. easy to manipulate configuration file. users don't have to mess with 
+#     css/html unless they want to. make an interactive script with menus to
+#     help edit and maintain this.
+
 
 #-------------------------------------------------------------------------------
 
