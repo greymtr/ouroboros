@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#incantation to our great lord and saviour, Lord Cthullu, so that He may bless 
+#incantation to our great lord and saviour, Lord Cthullu, so that He may bless
 #the following lines of code to function properly with little to no problems :
 
 #Iä! Iä! Cthulhu fhtagn! Ph'nglui mglw'nfah Cthulhu R'lyeh wgah'nagl fhtagn!
@@ -9,14 +9,14 @@
 
 # THINGS TO DO :
 #
-#  1. post template 
+#  1. post template
 #  2. posting order [ sort by new, modified etc. ]
 #  3. make several themes for different purposes. [ microblog, full blog, image
 #     feed etc. ]
 #  4. make the UI better. nobody wants to be writing at the current prompt.
 #     link to editor.
 #  5. clean up code, make it more readable, add more comments for the tricky bits
-#  6. easy to manipulate configuration file. users don't have to mess with 
+#  6. easy to manipulate configuration file. users don't have to mess with
 #     css/html unless they want to. make an interactive script with menus to
 #     help edit and maintain this.
 
@@ -31,22 +31,22 @@ del () {
 
   a=$(cat)
   echo "${a//$1/}"
-  
+
 }
 
 
-#rep is a function that accepts input from stdin and replaces all instances of 
+#rep is a function that accepts input from stdin and replaces all instances of
 #the first argument with the second argument
 
 rep () {
 
   a=$(cat)
   echo "${a//$1/$2}"
-  
+
 }
 
 
-#readr accepts input from stdin and returns the value of the field denoted by 
+#readr accepts input from stdin and returns the value of the field denoted by
 #the first argument, assuming field:value type format to exist
 
 readr () {
@@ -64,32 +64,32 @@ cd posts
 
 for file in $( ls *.md )
   do
-  
+
       echo "file:$file"
 #getting TITLE, DATE and TIME values from file
-    
+
     title=$( cat "$file" | readr TITLE | rep "_" " " )
     date=$( cat "$file" | readr DATE )
     time=$( cat "$file" | readr TIME )
 
-  
-#datetime is easier to sort as opposed to any other format, after removal of 
+
+#datetime is easier to sort as opposed to any other format, after removal of
 #all punctuation
 
     datetime=$( echo $date$time | del : | del - )
     echo "datetime:$datetime"
-  
-#stores file in content, gets rid of the lines where TITLE DATE and TIME are 
+
+#stores file in content, gets rid of the lines where TITLE DATE and TIME are
 #mentioned then deletes all occurences of multiple consecutive blank line,
 #switches problematic characters with appropriate html escape codes
 #and finally replaces the blank lines with the paragraph html tag
 
-    content=$( cat $file | 
-    del "TITLE:$title" | 
-    del "DATE:$date" | 
-    del "TIME:$time" | 
+    content=$( cat $file |
+    del "TITLE:$title" |
+    del "DATE:$date" |
+    del "TIME:$time" |
     rep "
-    
+
 " "
 " |
     rep "
@@ -103,29 +103,17 @@ for file in $( ls *.md )
 
     mkdir .dir
     t=$(echo $title | rep " " "-" )
-    
-    
+
+
 #HTML stuff
 
-    echo "
-    <article class=\"post\">
-      <a id=\"$t\">
-      <h2 class=\"title\"> $title </h2>
-      <!--<span class=\"perma\">◉</span >-->
-      </a>
-      <p class="datetime">
-      <span class=\"date\">$date</span>
-    <span class=\"time\">$time</span>
-      </p>
-      <div class=\"content\">
-      <p>$content</p>
-      </div>
-      
-      
-      </article>
-    " > .dir/$datetime
-    
-    
+    cat post.html |
+    rep TITLE $title |
+    rep DATE $date |
+    rep TIME $time |
+    rep CONTENT $content > .dir/$datetime
+
+
 #ALT [ for future consideration ] : cat post.head $content post.tail > $datetime
 
   done
@@ -140,11 +128,11 @@ rm ./tmp
 
 for i in `ls -r .dir`
   do
-  
+
     cat ".dir/$i" >> tmp
-    
+
   done
-  
+
 content=$( cat ./tmp )
 
 
@@ -157,5 +145,3 @@ cat template.html | rep CONTENT "$content" | tee ../index.html
 
 rm -rf .dir;
 rm tmp
-
-
