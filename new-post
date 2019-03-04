@@ -39,7 +39,6 @@ echo "$(</dev/stdin)" >> tempfile
 
 #renaming temporary file to proper post file
 
-TITLE=$( echo "$title" | rep " " "-")
 mv tempfile "$title.post.md"
 
 

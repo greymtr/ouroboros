@@ -65,10 +65,9 @@ cd posts
 for file in $( ls *.md )
   do
 
-      echo "file:$file"
 #getting TITLE, DATE and TIME values from file
 
-    title=$( cat "$file" | readr TITLE | rep "_" " " )
+    title=$( cat "$file" | readr TITLE )
     date=$( cat "$file" | readr DATE )
     time=$( cat "$file" | readr TIME )
 
@@ -77,7 +76,6 @@ for file in $( ls *.md )
 #all punctuation
 
     datetime=$( echo $date$time | del : | del - )
-    echo "datetime:$datetime"
 
 #stores file in content, gets rid of the lines where TITLE DATE and TIME are
 #mentioned then deletes all occurences of multiple consecutive blank line,
@@ -102,16 +100,17 @@ for file in $( ls *.md )
 #create temporary directory .dir
 
     mkdir .dir
-    t=$(echo $title | rep " " "-" )
+    t=$(echo $title | rep "_" "-" )
+    t2=$(echo $title | rep "_" "  ")
 
 
-#HTML stuff
+#post definition 
 
     cat post.html |
-    rep TITLE $title |
+    rep TITLE $t2 |
     rep DATE $date |
     rep TIME $time |
-    rep CONTENT $content > .dir/$datetime
+    rep CONTENT "$content" > .dir/$datetime
 
 
 #ALT [ for future consideration ] : cat post.head $content post.tail > $datetime
@@ -133,15 +132,13 @@ for i in `ls -r .dir`
 
   done
 
-content=$( cat ./tmp )
-
 
 #writing content to index with template.
 
-cat template.html | rep CONTENT "$content" | tee ../index.html
+cat template.html | rep CONTENT "$(cat tmp)" | tee ../index.html
 
 
-#getting rid of the temporary files.
+#getting rid of temporary files.
 
 rm -rf .dir;
 rm tmp
