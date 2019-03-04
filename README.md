@@ -18,4 +18,3 @@ from within ouroboros :
 *ctrl-D after post has been written*
 ./wrapper
 ```
-
