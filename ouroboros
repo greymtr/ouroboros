@@ -111,10 +111,8 @@ for file in $( ls *.md )
     rep TITLE $t2 |
     rep DATE $date |
     rep TIME $time |
+    rep LINK $t |
     rep CONTENT "$content" > .dir/$datetime
-
-
-#ALT [ for future consideration ] : cat post.head $content post.tail > $datetime
 
   done
 
@@ -124,7 +122,7 @@ for file in $( ls *.md )
 rm ./tmp
 
 
-#copying all post contents, in descending chronological order to temporary file tmp
+#copying all post contents, in descending chronological order to tmp
 
 for i in `ls -r .dir`
   do
@@ -136,7 +134,7 @@ for i in `ls -r .dir`
 
 #writing content to index with template.
 
-cat template.html | rep CONTENT "$(cat tmp)" | tee ../index.html
+cat template.html | rep CONTENT "$(cat tmp)" > ../index.html
 
 
 #getting rid of temporary files.
