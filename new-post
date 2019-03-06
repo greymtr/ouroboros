@@ -1,8 +1,19 @@
+#!/usr/bin/env bash
+
+#rep is a function that accepts input from stdin and replaces all instances of
+#the first argument with the second argument
+
+rep () {
+
+  a=$(cat)
+  echo "${a//$1/$2}"
+
+}
 
 cd posts
 
 #input with prompt for title
-#
+
 read -p "Enter Title   :  " -e title
 
 title=echo "$title" | rep " " "_"
@@ -40,6 +51,3 @@ echo "$(</dev/stdin)" >> tempfile
 #renaming temporary file to proper post file
 
 mv tempfile "$title.post.md"
-
-
-
