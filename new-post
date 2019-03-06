@@ -19,7 +19,7 @@ read -p "Enter Title   :  " -e title
 title=echo "$title" | rep " " "_"
 
 #generate post template
-#
+
 touch tempfile
 echo "TITLE:$title" > tempfile
 echo "DATE:$(date +%Y-%m-%d)" >> tempfile

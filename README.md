@@ -1,26 +1,14 @@
 # ouroboros
-a static site blog generator
 
-## download
+Ouroboros is a shell script that acts as static site blog generator.
 
-```
-git clone https://github.com/greymtr/ouroboros.git
-```
+Ouroboros is a command line tool, originally designed for managing and improving the process of writing blogs, keeping content and formatting separate.
 
-## usage
+By default ouroboros comes with no formatting, however an external or embedded stylesheet can be placed in the site template for this purpose. With a basic understanding of html/css one can generate content feeds of any type.
 
-ouroboros generates blogs. the output is a html file containing various posts in chronological order.
+As of now, 'boros generates a blog/feed chronologically, that is to say, sorted by latest.
+A post is a human readable text file with the extension .post.md [ markdown support in the near future ] located within the posts/ directory. Post files need to start with a title, date and time. Each post is expected to have a unique title.
 
-to create posts run the new-post script.
+One can create new posts by hand, by creating .post.md files and input title, date and time, or one can use the new-post script from within the ouroboros folder. the new-post executable prompts the user for the title and content and generates a post.md file with title, date, time and content filled out.
 
-this should prompt you for a title for your post, after which you will be asked to type in the contents of the post.
-
-[ in the future this step will open up an editor, for now one has to enter post contents via stdin. copy-paste is your friend until i fix this :/ ]
-
-hitting ctrl-d saves the post along with the current time.
-
-posts are stored in the posts folder with the extension .post.md
-
-post templates are defined in post.html
-
-template for the blog is defined in template.html
+The ouroboros executable is used to generate index.html, where all the different posts are compiled.
