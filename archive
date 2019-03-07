@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#creating 'archive'
+
+#NOTE : EXPERIMENTAL, only works with default post tempate.
+
+cat index.html |
+grep -a4  perma |
+rep "href=\"#" "href=\"index.html#" |
+rep "
+--
+" "
+
+" |
+grep -v article |
+grep -v perma |
+grep -v "</a>" |
+ grep -v "<p" |
+rep "<a" "<div class=\"menulink\">
+  <a" |
+rep "</span>" "</span>
+  </div>
+" > archive.html
