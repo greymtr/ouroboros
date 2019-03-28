@@ -80,7 +80,7 @@ for file in $( ls *.md )
 
 #stores file in content, gets rid of the lines where TITLE DATE and TIME are
 #mentioned then deletes all occurences of multiple consecutive blank line,
-#switches problematic characters with appropriate html escape codes
+#[ switches problematic characters with appropriate html escape codes ]
 #and finally replaces the blank lines with the paragraph html tag
 
     content=$( cat $file |
@@ -101,6 +101,11 @@ for file in $( ls *.md )
 #create temporary directory .dir
 
     mkdir .dir
+    
+#title format is no_spaces
+#t   -  for links
+#t2  -  displayed title
+
     t=$(echo $title | rep "_" "-" )
     t2=$(echo $title | rep "_" "  ")
 
