@@ -47,6 +47,10 @@ echo "
 echo "$(</dev/stdin)" >> tempfile
 
 
+###################
+# FIX EDITOR HERE #
+###################
+
 
 #renaming temporary file to proper post file
 
